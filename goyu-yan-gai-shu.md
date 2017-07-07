@@ -21,6 +21,7 @@
 * import 导入的报名，多个用（）而不是{}
 
 * const 常量定义
+
 * var 全局变量
 * type 一般类型声明
 * type gogo struct{} 结构的声明
@@ -47,230 +48,161 @@
 * interface
 * func
 
-\#\#\#变量声明
+### 变量声明
 
-
-
-\`\`\`
-
-var x int32 //默认为0值，不是空值，bool默认false，字符串默认空字符串
-
-var x = "hello world"
-
-\`\`\`
+> var x int32 //默认为0值，不是空值，bool默认false，字符串默认空字符串
+>
+> var x = "hello world"
 
 省略var
 
-\`\`\`
+> x := 100 //注意赋值符号差别
 
-x := 100 //注意赋值符号差别
-
-\`\`\`
-
-\#\#\#表达式
+### 表达式
 
 仅有三种流控制语句
 
-\* if
-
-\`\`\`
-
-if x
-
-&gt;
-
-0 {
-
-} else if x
-
-&lt;
-
-0 {
-
-} else {
-
-}
-
-\`\`\`
-
-\* switch
-
-\`\`\`
-
-switch {
-
-```
-case x 
-```
-
-&gt;
-
-0:
-
-```
-    cmd
-
-
-
-
-case x 
-```
-
-&lt;
-
-0:
-
-```
-    cmd
-
-default:
-
-    cmd
-```
-
-}
-
-\`\`\`
-
-\* for
-
-\`\`\`
-
-for i := 0;i
-
-&lt;
-
-5; i++ {
-
-```
-cmd
-```
-
-}
-
-for {            //相当于while（True）
-
-```
-cmd
-
-
-
-
-if {
-
-
-
-
-    break
-
-
-
-
-}
-```
-
-}
-
-\`\`\`
-
-\#\#\#函数
-
-\#\#\#\#基本的函数使用
-
-\`\`\`
-
-package main
-
-import \(
-
-```
-"errors"
-
-"fmt"
-```
-
-\)
-
-func div\(a, b int\)  \(int, error\) {    \这里定义了输入的函数类型和输出的函数类型
-
-```
-if b == 0 {
-
-    return 0, errors.New\("division by zero"\)
-
-}
-
-return a / b , nil
-```
-
-}
-
-\`\`\`
+* if
+
+> if x&gt;0 {
+>
+> } else if x&lt;0 {
+>
+> } else {
+>
+> }
+
+* switch
+
+> switch {
+>
+>     case x&gt;0:
+
+> ```
+> case x>0:
+> cmd
+> ```
+>
+> ```
+> case x<0:
+> ```
+>
+> ```
+>     cmd
+>
+> default:
+>
+>     cmd
+> ```
+>
+> }
+
+* for
+
+> for i := 0;i&lt;5; i++ {
+>
+> ```
+> cmd
+> ```
+>
+> }
+>
+> for {            //相当于while（True）
+>
+> ```
+> cmd
+>
+> if {
+>     break
+> }
+> ```
+>
+> ```
+> }
+> ```
+
+### 函数
+
+#### 基本的函数使用
+
+> package main
+>
+> import \(
+>
+> ```
+> "errors"
+>
+> "fmt"
+> ```
+>
+> \)
+>
+> func div\(a, b int\)  \(int, error\) {    \这里定义了输入的函数类型和输出的函数类型
+>
+> ```
+> if b == 0 {
+>
+>     return 0, errors.New("division by zero")
+>
+> }
+>
+> return a / b , nil
+> ```
+>
+> }
 
 函数可以被作为一个参数或者一个返回值
 
-\`\`\`
+> func test\(x int\) func\(\) {
+>
+> ```
+> return func() {    //匿名函数
+>
+>     println(x)        //闭包
+>
+> }
+> ```
+>
+> }
+>
+> func main\(\) {
+>
+> ```
+> x := 100
+>
+> f := test(x)
+>
+> f()
+> ```
+>
+> }
 
-func test\(x int\) func\(\) {
-
-```
-return func\(\) {    //匿名函数
-
-    println\(x\)        //闭包
-
-}
-```
-
-}
-
-func main\(\) {
-
-```
-x := 100
-
-f := test\(x\)
-
-f\(\)
-```
-
-}
-
-\`\`\`
-
-匿名函数\[^1\]
-
-闭包\[^2\]
-
-\#\#\#\#defer解析
+#### defer解析
 
 用defer定义延迟调用,无论是否出错都在返回前调用
 
-\`\`\`
-
-package main
-
-func test\(a, b int\) {
-
-```
-defer println\("dispose ..."\)
-
-
-
-
-println\(a / b\)
-```
-
-}
-
-func main\(\) {
-
-```
-test\(10, 0\)
-```
-
-}
-
-\`\`\`
+> package main
+>
+> func test\(a, b int\) {
+>
+> ```
+> defer println("dispose ...")
+>
+>
+>
+>
+> println(a / b)
+> ```
+>
+> }
+>
+> func main\(\) {
+>
+> ```
+> test(10, 0)
+> ```
+>
+> }
 
 首先明确的是defer是在return之前执行。与C语言不同，go是用栈返回的，c是用寄存器。\*return 并不是一条原子指令\*\[^4\]
 
@@ -616,7 +548,7 @@ for x := range data{        //接收数据，直到通道被关闭
 
 
 
-done 
+done
 ```
 
 &lt;
@@ -630,7 +562,7 @@ done
 func producer\(data chan int\) {
 
 ```
-for i := 0; i 
+for i := 0; i
 ```
 
 &lt;
@@ -638,7 +570,7 @@ for i := 0; i
 4;i++ {
 
 ```
-    data 
+    data
 ```
 
 &lt;
