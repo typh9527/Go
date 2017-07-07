@@ -23,6 +23,7 @@
 * const 常量定义
 
 * var 全局变量
+
 * type 一般类型声明
 * type gogo struct{} 结构的声明
 * type golang interface{} 接口声明
@@ -76,8 +77,10 @@
 
 > switch {
 >
->     case x&gt;0:
-
+> ```
+> case x&gt;0:
+> ```
+>
 > ```
 > case x>0:
 > cmd
@@ -204,17 +207,13 @@
 >
 > }
 
-首先明确的是defer是在return之前执行。与C语言不同，go是用栈返回的，c是用寄存器。\*return 并不是一条原子指令\*\[^4\]
+首先明确的是defer是在return之前执行。与C语言不同，go是用栈返回的，c是用寄存器。_return 并不是一条原子指令_
 
-&gt;
-
-return = 赋值指令 + CALL defer指令 + RET指令
+`return = 赋值指令 + CALL defer指令 + RET指令`
 
 简单范例
 
 原始代码
-
-\`\`\`
 
 ```
 func f() (r int) {
@@ -225,59 +224,49 @@ func f() (r int) {
 }
 ```
 
-```
-
-```
-
 等效代码
 
-    \`\`\`
-
-func f\(\) \(r int\) {  
-     r = 1  //给返回值赋值  
-     func\(r int\) {        //这里改的r是传值传进去的r，不会改变要返回的那个r值  
-          r = r + 5  
-     }\(r\)  
-     return        //空的return  
+```
+func f() (r int) {
+     r = 1  //给返回值赋值
+     func(r int) {        //这里改的r是传值传进去的r，不会改变要返回的那个r值
+          r = r + 5
+     }(r)
+     return        //空的return
 }
-
 ```
 
-```
+
 
 ```
 所以结果为1
 ```
 
-\#\#\#数据
+### 数据
 
-1.切片（slice）
+1. 切片（slice）
 
 类似动态数组
 
-\`\`\`
 
-x ：= make\(\[\]int,0,5\)     //创建容量为5的切片
 
-for i := 0;i
+> x ：= make\(\[\]int,0,5\)     //创建容量为5的切片
+>
+> for i := 0;i&lt;8; i++ {
+>
+> ```
+>  x = append(x,i)         //追加数据，当超出容量限制时，自动分配更大的存储空间
+> ```
+>
+> }
 
-&lt;
 
-8; i++ {
-
-```
- x = append\(x,i\)         //追加数据，当超出容量限制时，自动分配更大的存储空间
-```
-
-}
-
-\`\`\`
 
 2.字典（map）
 
 类型内置，可以直接从运行时层面获得性能优化
 
-\`\`\`
+
 
 func main\(\) {
 
@@ -304,11 +293,7 @@ delete\(m,"a"\)    //删除
 
 }
 
-\`\`\`
-
 3.结构体（struct）
-
-\`\`\`
 
 type user struct {
 
@@ -336,13 +321,9 @@ title string
 
 }
 
-\`\`\`
-
-\#\#\#方法
+### 方法
 
 1.为\*\*包内的任意类型\*\*定义方法
-
-\`\`\`
 
 package main
 
@@ -351,7 +332,7 @@ type X int
 func \(x \*X\) inc\(\) {
 
 ```
-\*x++
+*x++
 ```
 
 }
@@ -374,11 +355,7 @@ println\(x\)
 
 }
 
-\`\`\`
-
 2.直接调用匿名字段，类似继承
-
-\`\`\`
 
 package main
 
@@ -424,11 +401,7 @@ title string
 
 }
 
-\`\`\`
-
-\#\#\#接口
-
-\`\`\`
+### 接口
 
 type user struct {
 
@@ -487,13 +460,9 @@ p.Print\(\)
 
 }
 
-\`\`\`
-
-\#\#\#并发
+### 并发
 
 1.基础实现
-
-\`\`\`
 
 func task\(id int\) {
 
@@ -522,11 +491,7 @@ go task\(2\)
 time.Sleep\(time.Second \* 6\)
 ```
 
-\`\`\`
-
 2.通道（channel）与goroutine搭配，实现进程间通信
-
-\`\`\`
 
 //消费者
 
@@ -544,46 +509,24 @@ for x := range data{        //接收数据，直到通道被关闭
 
 
 }
-
-
-
-
-done
-```
-
-&lt;
-
-* true
-
 }
+```
 
 //生产者
 
 func producer\(data chan int\) {
 
 ```
-for i := 0; i
+for i := 0; i<4;i++ {
 ```
 
-&lt;
-
-4;i++ {
-
 ```
-    data
+    data<*i        //发送数据
+    }
 ```
 
-&lt;
-
-* i        //发送数据
-
 ```
-}
-
-
-
-
-close\(data\)        //生产结束，关闭通道
+close(data)        //生产结束，关闭通道
 ```
 
 }
@@ -612,13 +555,11 @@ go comsumer\(data,done\)    //启动消费者
 go producer\(data\)    //启动生产者
 ```
 
-&lt;
-
--done
+&lt;-done
 
 }
 
-\`\`\`
+
 
 \[^1\]:就是没有函数名的函数。
 
