@@ -120,5 +120,32 @@ const (
 
 * 作用域
 
+```go
+var cwd string
+
+func init() {
+    cwd, err := os.Getwd()
+    if err != nul {
+        log.Fatalf("os.Getwd:%v".err)
+    }
+}
+```
+
+这段程序中，目的是给cwd全局变量赋值，而由于cwd和err在init的词法块中都没有声明过，所以:=会将它们声明为本地变量。虽然err因为未被调用而报错，但是如果在其他情况中调用了err，则无法发现这个错误。为了避免这种风险，尽量不要使用:=.
+
+正确的程序
+
+```go
+var cmd string
+
+func init() {
+    var err error
+    cwd, err = os.Getwd()
+    if err != nil {
+        log.Fatalf("os.Getwd failed: %v",err)
+    }
+}
+```
+
 
 
