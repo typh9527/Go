@@ -95,10 +95,10 @@ const (
 
 ```go
 const (
-    i = iota
-    j = 3.14
-    k = iota
-    l
+    i = iota //0
+    j = 3.14 
+    k = iota //2
+    l        //3
 )
 ```
 
