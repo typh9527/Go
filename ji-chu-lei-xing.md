@@ -147,5 +147,64 @@ func init() {
 }
 ```
 
+## 基本类型
+
+数值，浮点，字符串，布尔，数组及错误类型
+
+传递副本
+
+## 引用类型
+
+切片，字典，接口，函数类型，通道
+
+传递标头值，底层结果并没有被复制，所以高效。
+
+```go
+package main
+
+import (
+
+)
+
+func main() {
+    a := make([]int, 3)
+    a[1] = 10
+    
+    b := new([]list)
+    b[1] //报错
+```
+
+new为引用类型分配零值内存并返回指针
+
+make为其分配内存初始化结构并返回对象
+
+```go
+package main
+
+import (
+
+)
+
+func mkslice() []int {
+	s := make([]int,0,10)
+	s = append(s,100)
+	return s
+}
+
+func mkmap() map[string]int {
+	m := make(map[string]int)
+	m["a"] = 1
+	return m
+}
+
+func main() {
+	m := mkmap()
+	println(m["a"])
+
+	s := mkslice()
+	println(s[0])
+}
+```
+
 
 
